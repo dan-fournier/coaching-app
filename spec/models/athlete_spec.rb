@@ -11,6 +11,13 @@ RSpec.describe Athlete, type: :model do
     expect(athlete).to be_valid
   end
 
+  describe "#full_name" do
+    it 'returns the full name of the athlete' do
+      athlete = Athlete.new(first_name: 'John', last_name: 'Doe')
+      expect(athlete.full_name).to eq('John Doe')
+    end
+  end
+
   describe "validations" do
     it "is invalid when first_name is not present" do
       athlete = Athlete.new(first_name: nil, last_name: "Doe", email: "test@email.com")
