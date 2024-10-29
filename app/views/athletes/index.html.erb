@@ -1,0 +1,7 @@
+<h1>All Athletes</h1>
+
+<ul>
+  <% @athletes.each do |athlete| %>
+    <li><%= "#{athlete.first_name}  #{athlete.last_name}" %></li>
+  <% end %>
+</ul>
