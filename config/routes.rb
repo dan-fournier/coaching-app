@@ -13,5 +13,5 @@ Rails.application.routes.draw do
   # root "posts#index"
 
 
-  resources :athletes, only: [ :index ]
+  resources :athletes, only: [ :index, :show ]
 end
