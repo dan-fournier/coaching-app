@@ -1,1 +1,23 @@
-<%= @athlete.full_name %>
+
+<div class="grid md:grid-cols-4 gap-4" >
+  <section class="flex flex-col gap-4 bg-white rounded-md p-5">
+    <span class="rounded-full overflow-hidden">
+      <%= image_tag 'user-placeholder.jpg' %>
+    </span>
+    <h1><%= @athlete.full_name %></h1> 
+  </section>
+
+  <section class="flex flex-col gap-4 bg-white rounded-md p-5 md:col-span-3">
+    <h2>Training Plan</h2>
+    <div class="flex flex-wrap gap-4">
+      <div class="p-4 rounded text-center border border-black min-w-40">Sunday</div>
+      <div class="p-4 rounded text-center border border-black min-w-40">Monday</div>
+      <div class="p-4 rounded text-center border border-black min-w-40">Tuesday</div>
+      <div class="p-4 rounded text-center border border-black min-w-40">Wednesday</div>
+      <div class="p-4 rounded text-center border border-black min-w-40">Thursday</div>
+      <div class="p-4 rounded text-center border border-black min-w-40">Friday</div>
+      <div class="p-4 rounded text-center border border-black min-w-40">Saturday</div>
+    </div>
+</section>
+</div>
+ 
