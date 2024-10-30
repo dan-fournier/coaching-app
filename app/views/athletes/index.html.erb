@@ -1,7 +1,19 @@
-<h1>All Athletes</h1>
+<h1 class="mb-4">All Athletes</h1>
 
-<ul>
+<ul class="flex flex-col gap-4 w-full">
   <% @athletes.each do |athlete| %>
-    <li><%= link_to athlete.full_name, athlete_path(athlete) %></li>
+    <li class="flex gap-4 items-center justify-between bg-white rounded-lg px-5 py-2">
+      <div class="flex gap-4 items-center">
+        <span class="rounded-full overflow-hidden">
+          <%= image_tag 'user-placeholder.jpg' %>
+        </span>
+        <%= link_to athlete.full_name, athlete_path(athlete) %>
+      </div>
+      <p><%= athlete.email %></p>
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+      </svg>
+    </li>
   <% end %>
 </ul>
