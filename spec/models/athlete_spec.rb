@@ -34,4 +34,11 @@ RSpec.describe Athlete, type: :model do
       expect(athlete).not_to be_valid
     end
   end
+
+  describe "associations" do
+    it "has many assigned sessions" do
+      assoc = Athlete.reflect_on_association(:assigned_sessions).macro
+      expect(assoc).to eq(:has_many)
+    end
+  end
 end
