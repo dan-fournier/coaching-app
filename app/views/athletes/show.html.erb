@@ -10,14 +10,15 @@
   <section class="flex flex-col gap-4 bg-white rounded-md p-5 md:col-span-3">
     <h2>Training Plan</h2>
     <div class="flex flex-wrap gap-4">
-      <div class="p-4 rounded text-center border border-black min-w-40">Sunday</div>
-      <div class="p-4 rounded text-center border border-black min-w-40">Monday</div>
-      <div class="p-4 rounded text-center border border-black min-w-40">Tuesday</div>
-      <div class="p-4 rounded text-center border border-black min-w-40">Wednesday</div>
-      <div class="p-4 rounded text-center border border-black min-w-40">Thursday</div>
-      <div class="p-4 rounded text-center border border-black min-w-40">Friday</div>
-      <div class="p-4 rounded text-center border border-black min-w-40">Saturday</div>
+      <% if @athlete.assigned_sessions.any? %>
+        <% @athlete.assigned_sessions.each do |session| %>
+          <div class="p-4 rounded text-center border border-black min-w-40">
+            <h2><%= session.date %>
+            <p><%= session.details %></p>
+          </div>
+        <% end %>
+      <% end %>
     </div>
-</section>
+  </section>
 </div>
  
