@@ -13,5 +13,7 @@ Rails.application.routes.draw do
   # root "posts#index"
 
 
-  resources :athletes, only: [ :index, :show ]
+  resources :athletes, only: [ :index, :show ] do
+    resources :weekly_plans, only: [ :create, :new ]
+  end
 end

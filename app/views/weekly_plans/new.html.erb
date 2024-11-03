@@ -1,0 +1,21 @@
+<%= link_to "Back to athlete", athlete_path(@athlete) %>
+<section class="flex flex-col gap-4 bg-white rounded-md p-5 md:col-span-3 shadow">
+  <h2 class="text-lg font-bold mb-4">Add Weekly Plan</h2>
+  <%= form_with(model: @athlete, url: athlete_weekly_plans_path(@athlete), local: true) do |form| %>
+    <div>
+      <%= form.label :start_date, 'Select Start Date:' %>
+      <%= form.date_select :start_date, default: Date.today %>
+    </div>
+    <div class="flex flex-wrap gap-4">
+      <% 7.times do |i| %>
+        <div class="flex flex-col p-4 rounded-lg bg-gray-100 border border-gray-300 w-52 min-h-40">
+          <%= form.label :session_type %>
+          <%= form.select :session_type, AssignedSession.session_types.keys.map { |type| type.humanize } %>
+        
+          <%= form.text_area "details[#{i}]", placeholder: 'Session details', class: 'mt-2 p-2 border' %>
+        </div>
+      <% end %>
+    </div>
+    <%= form.submit 'Create Weekly Plan', class: 'mt-4 bg-blue-500 text-white rounded p-2' %>
+  <% end %>
+</section>
