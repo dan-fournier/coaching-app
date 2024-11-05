@@ -3,6 +3,7 @@ class AssignedSession < ApplicationRecord
 
   validates :date, presence: true
   validates :details, presence: true
+  validates :session_type, presence: true
 
   enum :session_type, {
     easy_run: 0,

@@ -26,6 +26,11 @@ RSpec.describe AssignedSession, type: :model do
       assigned_session.details = nil
       expect(assigned_session).not_to be_valid
     end
+
+    it "is invalid when session_type is not present" do
+      assigned_session.session_type = nil
+      expect(assigned_session).not_to be_valid
+    end
   end
 
   describe 'enum session_type' do
