@@ -13,23 +13,20 @@ RSpec.describe "WeeklyPlans", type: :request do
 
   describe "POST /athletes/:athlete_id/weekly_plans" do
     context "with valid params" do
-      valid_params = { athlete: {
-        start_date: "2024-10-28",
-        session_type_0: "easy_run",
-        details_0: "testing",
-        session_type_1: "easy_run",
-        details_1: "testing",
-        session_type_2: "easy_run",
-        details_2: "testing",
-        session_type_3: "easy_run",
-        details_3: "testing",
-        session_type_4: "easy_run",
-        details_4: "testing",
-        session_type_5: "easy_run",
-        details_5: "testing",
-        session_type_6: "easy_run",
-        details_6: "testing"
-      } }
+      let(:valid_params) do
+        {
+          athlete: {
+            start_date: "2024-11-05",
+            session_type_0: "easy_run", details_0: "Run 5 km",
+            session_type_1: "easy_run", details_1: "Run 5 km",
+            session_type_2: "workout", details_2: "10x400m intervals",
+            session_type_3: "easy_run", details_3: "Run 5 km",
+            session_type_4: "easy_run", details_4: "Run 5 km",
+            session_type_5: "rest_day", details_5: "Rest day",
+            session_type_6: "long_run", details_6: "Run 15 km"
+          }
+        }
+      end
       it "creates seven new assigned sessions for an athlete" do
         expect {
           post athlete_weekly_plans_path(athlete), params: valid_params
@@ -43,27 +40,48 @@ RSpec.describe "WeeklyPlans", type: :request do
 
         follow_redirect!
 
-        expect(response.body).to include("New plan successfully created")
+        expect(response.body).to include("New weekly plan successfully created")
       end
     end
+
     context "with no start_date" do
-      invalid_params = { athlete: {
-        start_date: "",
-        session_type_0: "easy_run",
-        details_0: "testing",
-        session_type_1: "easy_run",
-        details_1: "testing",
-        session_type_2: "easy_run",
-        details_2: "testing",
-        session_type_3: "easy_run",
-        details_3: "testing",
-        session_type_4: "easy_run",
-        details_4: "testing",
-        session_type_5: "easy_run",
-        details_5: "testing",
-        session_type_6: "easy_run",
-        details_6: "testing"
-      } }
+      let(:invalid_params) do
+        {
+          athlete: {
+            start_date: "",
+            session_type_0: "easy_run", details_0: "Run 5 km",
+            session_type_1: "easy_run", details_1: "Run 5 km",
+            session_type_2: "workout", details_2: "10x400m intervals",
+            session_type_3: "easy_run", details_3: "Run 5 km",
+            session_type_4: "easy_run", details_4: "Run 5 km",
+            session_type_5: "rest_day", details_5: "Rest day",
+            session_type_6: "long_run", details_6: "Run 15 km"
+          }
+        }
+      end
+
+      it "does not create any new assigned sessions for an athlete" do
+        expect {
+          post athlete_weekly_plans_path(athlete), params: invalid_params
+      }.to change(AssignedSession, :count).by(0)
+      expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+    context "with an incomplete session" do
+      let(:invalid_params) do
+        {
+          athlete: {
+            start_date: "2024-10-28",
+            session_type_0: "easy_run", details_0: "Run 5 km",
+            session_type_1: "easy_run", details_1: "Run 5 km",
+            session_type_2: "workout", details_2: "",
+            session_type_3: "easy_run", details_3: "Run 5 km",
+            session_type_4: "easy_run", details_4: "Run 5 km",
+            session_type_5: "rest_day", details_5: "Rest day",
+            session_type_6: "easy_run", details_6: "Run 5 km"
+          }
+        }
+      end
 
       it "does not create any new assigned sessions for an athlete" do
         expect {

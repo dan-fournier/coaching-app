@@ -10,45 +10,34 @@ class WeeklyPlansController < ApplicationController
 
     if start_date.present?
 
+      # Parse the start_date
       date = Date.parse(start_date)
 
-      @athlete.assigned_sessions.create!(
-        session_type: params[:athlete][:session_type_0],
-        date: date,
-        details: params[:athlete][:details_0]
-      )
-      @athlete.assigned_sessions.create!(
-        session_type: params[:athlete][:session_type_1],
-        date: date + 1,
-        details: params[:athlete][:details_1]
-      )
-      @athlete.assigned_sessions.create!(
-        session_type: params[:athlete][:session_type_2],
-        date: date + 2,
-        details: params[:athlete][:details_2]
-      )
-      @athlete.assigned_sessions.create!(
-        session_type: params[:athlete][:session_type_3],
-        date: date + 3,
-        details: params[:athlete][:details_3]
-      )
-      @athlete.assigned_sessions.create!(
-        session_type: params[:athlete][:session_type_4],
-        date: date + 4,
-        details: params[:athlete][:details_4]
-      )
-      @athlete.assigned_sessions.create!(
-        session_type: params[:athlete][:session_type_5],
-        date: date + 5,
-        details: params[:athlete][:details_5]
-      )
-      @athlete.assigned_sessions.create!(
-        session_type: params[:athlete][:session_type_6],
-        date: date + 6,
-        details: params[:athlete][:details_6]
-      )
-    end
+      # Create the 7 new AssignedSession records for the week in memory without saving them
+      sessions = []
 
-    redirect_to athlete_path(@athlete), notice: "New plan successfully created"
+      7.times do |i|
+        session_type_param = params[:athlete]["session_type_#{i}"]
+        details_param = params[:athlete]["details_#{i}"]
+
+        sessions << @athlete.assigned_sessions.build(
+          session_type: session_type_param,
+          date: date + i.days,
+          details: details_param
+        )
+      end
+
+      # Validate all sessions
+      if sessions.all?(&:valid?)
+        # If all sessions are valid, save them in one transaction
+        ActiveRecord::Base.transaction do
+          sessions.each(&:save!)
+        end
+
+        redirect_to athlete_path(@athlete), notice: "New weekly plan successfully created."
+      end
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 end
