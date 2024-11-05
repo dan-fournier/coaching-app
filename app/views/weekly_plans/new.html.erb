@@ -4,7 +4,12 @@
   <%= form_with(model: @athlete, url: athlete_weekly_plans_path(@athlete), method: :post, local: true) do |form| %>
     <div>
       <%= form.label :start_date, 'Select Start Date:' %>
-      <%= form.date_field :start_date, default: Date.today, required: true %>
+      <%= form.date_field :start_date, default: Date.today %>
+      <% if @athlete.errors.full_messages.any? { |msg| msg.include?("Date can't be blank") } %>
+        <div class="text-sm text-red-800">
+          <%= @athlete.errors.full_messages.select { |msg| msg.include?("Date can't be blank")} %>
+        </div>
+      <% end %>
     </div>
     <div class="flex flex-wrap gap-4">
       <% 7.times do |i| %>
@@ -13,6 +18,11 @@
           <%= form.select "session_type_#{i}", AssignedSession.session_types.keys.map { |type| [type.humanize, type] } %>
         
           <%= form.text_area "details_#{i}", placeholder: 'Session details', class: 'mt-2 p-2 border' %>
+          <% if @athlete.errors.full_messages.any? { |msg| msg.include?("Session #{i + 1}:") } %>
+            <div class="text-sm text-red-800">
+              <%= @athlete.errors.full_messages.select { |msg| msg.include?("Session #{i + 1}:") }.join(", ") %>
+            </div>
+          <% end %>
         </div>
       <% end %>
     </div>

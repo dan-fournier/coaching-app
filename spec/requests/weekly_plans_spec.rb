@@ -67,7 +67,7 @@ RSpec.describe "WeeklyPlans", type: :request do
       expect(response).to have_http_status(:unprocessable_entity)
       end
     end
-    context "with an incomplete session" do
+    context "with a session that is incomplete due to missing details" do
       let(:invalid_params) do
         {
           athlete: {

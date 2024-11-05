@@ -35,7 +35,22 @@ class WeeklyPlansController < ApplicationController
         end
 
         redirect_to athlete_path(@athlete), notice: "New weekly plan successfully created."
+
+      else
+        # If any session is invalid, add errors to the athlete object and re-render the form
+        sessions.each_with_index do |session, index|
+          if session.invalid?
+            session.errors.full_messages.each do |message|
+              @athlete.errors.add(:base, "Session #{index + 1}: #{message}")
+            end
+          end
+        end
+
+        # Re-render the form with errors
+        render :new, status: :unprocessable_entity
       end
+
+
     else
       render :new, status: :unprocessable_entity
     end
