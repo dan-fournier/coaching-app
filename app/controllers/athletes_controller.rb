@@ -5,5 +5,6 @@ class AthletesController < ApplicationController
 
   def show
     @athlete = Athlete.find(params[:id])
+    @start_date = Date.current.beginning_of_week
   end
 end
